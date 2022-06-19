@@ -1,5 +1,6 @@
 ## wakanda.gov front page
 
+![alt text](public/wakanda.gov.png)
 
 ## Getting Started
 
