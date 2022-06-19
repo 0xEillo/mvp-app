@@ -15,7 +15,7 @@ export const Leaderboard = () => {
     <div className={styles.leaderboard}>
       <div>
         <button
-          className={styles.leadsButton}
+          className={styles.lightButton}
           onClick={() => {
             getTopCandidates();
           }}

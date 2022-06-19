@@ -55,7 +55,7 @@ export default function Home() {
                 <h3>Your WKND token balance: {tokenBalance}</h3>
               </div>
               <button
-                className={styles.claimButton}
+                className={styles.darkButton}
                 onClick={() => {
                   if (voterAddress.toString() != "0x00") {
                     setConnected(true);
@@ -89,6 +89,7 @@ export default function Home() {
                 onChange={(event) => setWeight(event.target.value)}
               ></input>
               <button
+                className={styles.darkButton}
                 onClick={() => {
                   console.log(connected);
                   if (connected) {
