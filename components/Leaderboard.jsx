@@ -12,14 +12,14 @@ export const Leaderboard = () => {
     });
   };
   return (
-    <div>
+    <div className={styles.leaderboard}>
       <div>
         <button
           onClick={() => {
             getTopCandidates();
           }}
         >
-          Top Candidates
+          Show Leads
         </button>
       </div>
       <div>
@@ -28,16 +28,16 @@ export const Leaderboard = () => {
             key={candidate?.id.toString()}
             className={styles.winningCandidate}
           >
-            <div>
+            <div className={styles.stat}>
               <p> Name: {candidate?.name || ""} </p>
             </div>
-            <div>
+            <div className={styles.stat}>
               <p> Age: {(candidate?.age).toString() || 0} </p>
             </div>
-            <div>
+            <div className={styles.stat}>
               <p> Cult: {candidate?.cult || ""} </p>
             </div>
-            <div>
+            <div className={styles.stat}>
               <p> Votes: {(candidate?.votes).toString() || 0} </p>
             </div>
           </div>

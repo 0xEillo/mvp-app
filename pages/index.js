@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { ethers } from "ethers";
 import { WagmiConfig } from "wagmi";
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import { wagmiClient, chains } from "../wagmiConfig";
 import React, { useEffect, useState } from "react";
 import { Leaderboard } from "../components/Leaderboard";
@@ -21,16 +21,14 @@ export default function Home() {
   const [weight, setWeight] = useState(0);
 
   useEffect(() => {
+    getTokenBalance();
     getVoterAddress().then((res) => {
-      setVoterAddress(res);
+      setVoterAddress(res.account);
       if (res != "0x00") {
         setConnected(true);
       }
     });
   });
-
-  console.log("tokenBalance", tokenBalance);
-  console.log("voterAddress", voterAddress);
 
   const getTokenBalance = () => {
     _getTokenBalance(voterAddress, signer, WKND)
@@ -48,57 +46,61 @@ export default function Home() {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
+      <RainbowKitProvider chains={chains} theme={darkTheme()}>
         <div>
           <Navbar></Navbar>
-          <div>
-            <button
-              onClick={() => {
-                if (voterAddress.toString() != "0x00") {
-                  setConnected(true);
-                  getAccount().then((res) => {
-                    console.log(voterAddress);
-                    console.log("res", res);
-                    setVoterAddress(res);
-                    claimToken();
-                  });
-                }
-              }}
-            >
-              Claim WKND Token
-            </button>
+          <div className={styles.container}>
+            <div className={styles.balanceSection}>
+              <div>
+                <h3>Your WKND token balance: {tokenBalance}</h3>
+              </div>
+              <button
+                onClick={() => {
+                  if (voterAddress.toString() != "0x00") {
+                    setConnected(true);
+                    getAccount().then((res) => {
+                      setVoterAddress(res);
+                      setHasClaimed(true);
+                      claimToken();
+                    });
+                  }
+                  console.log(hasClaimed);
+                  if (hasClaimed == true) {
+                    console.log("hasClaimed", hasClaimed);
+                    return <h1>Hello</h1>;
+                  }
+                }}
+              >
+                Claim WKND Token
+              </button>
+            </div>
+            <div className={styles.vote}>
+              <input
+                id="id"
+                type="number"
+                placeholder="candidate-id"
+                onChange={(event) => setId(event.target.value)}
+              ></input>
+              <input
+                id="weight"
+                type="number"
+                placeholder="weight"
+                onChange={(event) => setWeight(event.target.value)}
+              ></input>
+              <button
+                onClick={() => {
+                  console.log(connected);
+                  if (connected) {
+                    _vote(weight, id);
+                  }
+                }}
+              >
+                VOTE
+              </button>
+            </div>
+
+            <Leaderboard></Leaderboard>
           </div>
-          <div>
-            <button
-              onClick={() => {
-                getTokenBalance();
-              }}
-            >
-              Get WKND Balance
-            </button>
-            <p>Your WKND token balance: {tokenBalance}</p>
-          </div>
-          <input
-            id="id"
-            type="number"
-            onChange={(event) => setId(event.target.value)}
-          ></input>
-          <input
-            id="weight"
-            type="number"
-            onChange={(event) => setWeight(event.target.value)}
-          ></input>
-          <button
-            onClick={() => {
-              console.log(connected);
-              if (connected) {
-                _vote(weight, id);
-              }
-            }}
-          >
-            Vote
-          </button>
-          <Leaderboard></Leaderboard>
         </div>
       </RainbowKitProvider>
     </WagmiConfig>
@@ -106,10 +108,11 @@ export default function Home() {
 }
 
 async function _claimToken(voterAddress, signer, WKND) {
-  await WKND.connect(signer).mint(voterAddress, {
+  let tx = await WKND.connect(signer).mint(voterAddress, {
     gasPrice: 100,
     gasLimit: 9000000,
   });
+  console.log(tx);
 }
 
 async function _getTokenBalance(voterAddress, signer, WKND) {
@@ -143,5 +146,5 @@ async function getVoterAddress() {
   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
   // Prompt user for account connections
   const accounts = await provider.send("eth_requestAccounts", []);
-  return accounts[0];
+  return { account: accounts[0] };
 }

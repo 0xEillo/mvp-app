@@ -2,8 +2,14 @@ html,
 body {
   padding: 0;
   margin: 0;
+  background-color: rgb(20, 24, 27);
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: rgb(181, 190, 204);
+}
+
+h1 {
+  color: rgb(181, 190, 204);
 }
 
 a {
