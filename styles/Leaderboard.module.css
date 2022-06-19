@@ -5,7 +5,6 @@
     padding: 50px;
 }
 
-
 .winningCandidate{
     display: flex;
     flex-direction: row;
@@ -17,5 +16,16 @@
 }
 
 .stat {
-    padding: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
+
+.leadsButton {
+    background-color: rgb(43, 46, 52);
+    color: rgb(181, 190, 204);
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 3px 3px 2px black;
+  }

@@ -39,9 +39,16 @@
   background-color: rgb(43, 46, 52);
 }
 
-.buttonRed {
-  background-color: red;
+.claimButton {
+  background-color: rgb(20, 24, 27);
+  color: rgb(181, 190, 204);
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 3px 3px 2px black;
 }
+
 .buttonBlue {
   background-color: blue;
 }

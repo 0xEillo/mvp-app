@@ -55,6 +55,7 @@ export default function Home() {
                 <h3>Your WKND token balance: {tokenBalance}</h3>
               </div>
               <button
+                className={styles.claimButton}
                 onClick={() => {
                   if (voterAddress.toString() != "0x00") {
                     setConnected(true);

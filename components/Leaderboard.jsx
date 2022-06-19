@@ -15,6 +15,7 @@ export const Leaderboard = () => {
     <div className={styles.leaderboard}>
       <div>
         <button
+          className={styles.leadsButton}
           onClick={() => {
             getTopCandidates();
           }}
@@ -29,16 +30,24 @@ export const Leaderboard = () => {
             className={styles.winningCandidate}
           >
             <div className={styles.stat}>
-              <p> Name: {candidate?.name || ""} </p>
+              <p>
+                Name: <strong>{candidate?.name || ""}</strong>
+              </p>
             </div>
             <div className={styles.stat}>
-              <p> Age: {(candidate?.age).toString() || 0} </p>
+              <p>
+                Age: <strong>{(candidate?.age).toString() || 0}</strong>
+              </p>
             </div>
             <div className={styles.stat}>
-              <p> Cult: {candidate?.cult || ""} </p>
+              <p>
+                Cult: <strong>{candidate?.cult || ""}</strong>
+              </p>
             </div>
             <div className={styles.stat}>
-              <p> Votes: {(candidate?.votes).toString() || 0} </p>
+              <p>
+                Votes: <strong>{(candidate?.votes).toString() || 0}</strong>
+              </p>
             </div>
           </div>
         ))}
