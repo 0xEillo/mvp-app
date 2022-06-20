@@ -1,5 +1,9 @@
 import { useState } from "react";
 import styles from "../styles/Leaderboard.module.css";
+import { ethers } from "ethers";
+import { GOVERNANCE_ABI } from "../constants";
+
+const GOVERNANCE_ADDRESS = "0x50594c945C0b4e48E84EBd26196bD2fBbe7A0D3f";
 
 export const Leaderboard = () => {
   const [weight, setWeight] = useState(0);
@@ -56,8 +60,16 @@ export const Leaderboard = () => {
 };
 
 async function _getTopCandidates(weight, id) {
+  const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  // Prompt user for account connections
+  await provider.send("eth_requestAccounts", []);
+  const VotesGovernorContract = new ethers.Contract(
+    GOVERNANCE_ADDRESS,
+    GOVERNANCE_ABI,
+    provider
+  );
   let leaderboard = await VotesGovernorContract.connect(
-    signer
+    provider
   ).winningCandidates();
   return leaderboard;
 }
