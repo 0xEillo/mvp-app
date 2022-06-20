@@ -3,14 +3,12 @@ import styles from "../styles/Leaderboard.module.css";
 import { ethers } from "ethers";
 import { GOVERNANCE_ABI } from "../constants";
 
-const GOVERNANCE_ADDRESS = "0x50594c945C0b4e48E84EBd26196bD2fBbe7A0D3f";
+const GOVERNANCE_ADDRESS = "0xae3aF753cDbD3f1611337317C851dB59de97cD4E";
 
 export const Leaderboard = () => {
-  const [weight, setWeight] = useState(0);
-  const [id, setId] = useState(0);
   const [topCandidates, setTopCandidates] = useState([]);
   const getTopCandidates = () => {
-    _getTopCandidates(weight, id).then((response) => {
+    _getTopCandidates().then((response) => {
       setTopCandidates(response);
     });
   };
@@ -59,7 +57,7 @@ export const Leaderboard = () => {
   );
 };
 
-async function _getTopCandidates(weight, id) {
+async function _getTopCandidates() {
   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
   // Prompt user for account connections
   await provider.send("eth_requestAccounts", []);

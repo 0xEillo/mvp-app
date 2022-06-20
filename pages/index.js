@@ -6,8 +6,8 @@ import { Navbar } from "../components//Navbar";
 import { useAccount } from "wagmi";
 import { TOKEN_ABI, GOVERNANCE_ABI } from "../constants";
 
-const TOKEN_ADDRESS = "0x90b335B944abef5C74dEfA0F3Bad62E2c08CE52A";
-const GOVERNANCE_ADDRESS = "0x50594c945C0b4e48E84EBd26196bD2fBbe7A0D3f";
+const TOKEN_ADDRESS = "0xBE4BDEd02E60B7929a5b9D2c932a26E5Ed5e91FF";
+const GOVERNANCE_ADDRESS = "0xae3aF753cDbD3f1611337317C851dB59de97cD4E";
 
 export default function Home() {
   const [connected, setConnected] = useState(false);
@@ -125,7 +125,7 @@ async function _getTokenBalance(voterAddress) {
   return tx.toNumber();
 }
 
-async function _vote(voterAddress, id, weight) {
+async function _vote(voterAddress, weight, id) {
   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
   // Prompt user for account connections
   await provider.send("eth_requestAccounts", []);
