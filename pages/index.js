@@ -2,9 +2,12 @@ import styles from "../styles/Home.module.css";
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { Leaderboard } from "../components/Leaderboard";
-import { signer, VotesGovernorContract, WKND } from "../utils";
 import { Navbar } from "../components//Navbar";
 import { useAccount } from "wagmi";
+import { TOKEN_ABI, GOVERNANCE_ABI } from "../constants";
+
+const TOKEN_ADDRESS = "0x90b335B944abef5C74dEfA0F3Bad62E2c08CE52A";
+const GOVERNANCE_ADDRESS = "0x50594c945C0b4e48E84EBd26196bD2fBbe7A0D3f";
 
 export default function Home() {
   const [connected, setConnected] = useState(false);
@@ -26,7 +29,7 @@ export default function Home() {
 
   const getTokenBalance = () => {
     if (connected) {
-      _getTokenBalance(voterAddress, signer, WKND)
+      _getTokenBalance(voterAddress)
         .then((balance) => {
           setTokenBalance(balance);
           console.log(balance);
@@ -37,7 +40,7 @@ export default function Home() {
     }
   };
   const claimToken = () => {
-    _claimToken(voterAddress, signer, WKND);
+    _claimToken(voterAddress);
   };
 
   return (
@@ -92,18 +95,31 @@ export default function Home() {
   );
 }
 
-async function _claimToken(voterAddress, signer, WKND) {
+async function _claimToken(voterAddress) {
+  const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  // Prompt user for account connections
+  await provider.send("eth_requestAccounts", []);
+  const signer = provider.getSigner();
+
+  const WKND = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, provider);
+
   let tx = await WKND.connect(signer).mint(voterAddress, {
-    gasPrice: 100,
-    gasLimit: 9000000,
+    gasPrice: ethers.utils.parseEther("0.00000001"),
+    gasLimit: 1000001,
   });
   console.log(tx);
 }
 
-async function _getTokenBalance(voterAddress, signer, WKND) {
+async function _getTokenBalance(voterAddress) {
+  const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  // Prompt user for account connections
+  await provider.send("eth_requestAccounts", []);
+  const signer = provider.getSigner();
+  const WKND = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, provider);
+
   let tx = await WKND.connect(signer).balanceOf(voterAddress, {
-    gasPrice: 100,
-    gasLimit: 9000000,
+    gasPrice: ethers.utils.parseEther("0.00000001"),
+    gasLimit: 1000001,
   });
   console.log(tx.toNumber());
   return tx.toNumber();
@@ -113,13 +129,19 @@ async function _vote(voterAddress, id, weight) {
   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
   // Prompt user for account connections
   await provider.send("eth_requestAccounts", []);
+  const VotesGovernorContract = new ethers.Contract(
+    GOVERNANCE_ADDRESS,
+    GOVERNANCE_ABI,
+    provider
+  );
   const signer = provider.getSigner();
   const signerAddress = await signer.getAddress();
   console.log("Account:", signerAddress);
   console.log(id, weight);
   if (signerAddress == voterAddress) {
     const tx = await VotesGovernorContract.connect(signer).vote(weight, id, {
-      gasPrice: ethers.utils.parseEther("0.0000001"),
+      gasPrice: ethers.utils.parseEther("0.00000001"),
+      gasLimit: 1000001,
     });
     console.log("voted");
     console.log(tx);

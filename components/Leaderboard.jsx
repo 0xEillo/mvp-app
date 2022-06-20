@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { signer, VotesGovernorContract } from "../utils";
 import styles from "../styles/Leaderboard.module.css";
 
 export const Leaderboard = () => {
