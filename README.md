@@ -1,4 +1,8 @@
-## wakanda.gov front page
+# wakanda.gov
+
+deployed app: https://mvp-app.vercel.app/
+
+## front page
 
 ![alt text](public/wakanda.gov.png)
 
