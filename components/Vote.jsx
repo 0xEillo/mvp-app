@@ -37,7 +37,7 @@ export const Vote = () => {
           onChange={(event) => setWeight(event.target.value)}
         ></input>
         <button
-          className={styles.darkButton}
+          className={styles.lightButton}
           onClick={() => {
             if (connected) {
               _vote(voterAddress, weight, id);
