@@ -8,10 +8,13 @@ export const Navbar = () => {
       <div className={styles.menu}>
         <h1 className={styles.title}>wakanda.gov</h1>
         <Link href="/">
-          <h3 className={styles.menuItem}>Home</h3>
+          <h3 className={styles.menuItem}>Token</h3>
         </Link>
-        <Link href="/vote">
-          <h3 className={styles.menuItem}>Vote</h3>
+        <Link href="/candidates">
+          <h3 className={styles.menuItem}>Candidates</h3>
+        </Link>
+        <Link href="/leaders">
+          <h3 className={styles.menuItem}>Leaders</h3>
         </Link>
       </div>
 

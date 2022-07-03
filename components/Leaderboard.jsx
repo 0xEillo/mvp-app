@@ -2,8 +2,9 @@ import { useState } from "react";
 import styles from "../styles/Leaderboard.module.css";
 import { ethers } from "ethers";
 import { GOVERNANCE_ABI } from "../constants";
+import { Button } from "antd";
 
-const GOVERNANCE_ADDRESS = "0xae3aF753cDbD3f1611337317C851dB59de97cD4E";
+const GOVERNANCE_ADDRESS = "0xefBBA49F5FE544ecc2e352bD3C44c0cF1eCAFD65";
 
 export const Leaderboard = () => {
   const [topCandidates, setTopCandidates] = useState([]);
@@ -15,43 +16,60 @@ export const Leaderboard = () => {
   return (
     <div className={styles.leaderboard}>
       <div>
-        <button
+        <Button
+          type="primary"
           className={styles.lightButton}
           onClick={() => {
             getTopCandidates();
           }}
         >
           Show Leads
-        </button>
+        </Button>
       </div>
       <div>
-        {topCandidates.map((candidate, index) => (
-          <div
-            key={candidate?.id.toString()}
-            className={styles.winningCandidate}
-          >
-            <div className={styles.stat}>
-              <p>
-                Name: <strong>{candidate?.name || ""}</strong>
-              </p>
-            </div>
-            <div className={styles.stat}>
-              <p>
-                Age: <strong>{(candidate?.age).toString() || 0}</strong>
-              </p>
-            </div>
-            <div className={styles.stat}>
-              <p>
-                Cult: <strong>{candidate?.cult || ""}</strong>
-              </p>
-            </div>
-            <div className={styles.stat}>
-              <p>
-                Votes: <strong>{(candidate?.votes).toString() || 0}</strong>
-              </p>
-            </div>
+        <div className={styles.titles}>
+          <div className={styles.stat}>
+            <div className={styles.title}>Name</div>
           </div>
-        ))}
+          <div className={styles.stat}>
+            <div className={styles.title}>Age</div>
+          </div>
+          <div className={styles.stat}>
+            <div className={styles.title}>Cult</div>
+          </div>
+          <div className={styles.stat}>
+            <div className={styles.title}>Votes</div>
+          </div>
+        </div>
+        <div>
+          {topCandidates.map((candidate, index) => (
+            <div
+              key={candidate?.id.toString()}
+              className={styles.winningCandidate}
+            >
+              <div className={styles.stat}>
+                <p>
+                  <strong>{candidate?.name || ""}</strong>
+                </p>
+              </div>
+              <div className={styles.stat}>
+                <p>
+                  <strong>{(candidate?.age).toString() || 0}</strong>
+                </p>
+              </div>
+              <div className={styles.stat}>
+                <p>
+                  <strong>{candidate?.cult || ""}</strong>
+                </p>
+              </div>
+              <div className={styles.stat}>
+                <p>
+                  <strong>{(candidate?.votes).toString() || 0}</strong>
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

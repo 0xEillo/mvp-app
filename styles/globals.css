@@ -11,6 +11,18 @@ body {
 h1 {
   color: rgb(181, 190, 204);
 }
+h3:hover {
+  border-radius: 10px;
+
+  transform: scale(0.5.0.5);
+  visibility: visible;
+  background-color: rgb(20, 24, 27);
+}
+
+#button:active {
+  position: relative;
+  top: 1px;
+}
 
 a {
   color: inherit;

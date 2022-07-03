@@ -45,7 +45,6 @@
   font-weight: bold;
   padding: 10px;
   border-radius: 5px;
-  border: none;
   box-shadow: 3px 3px 2px black;
 }
 
@@ -55,10 +54,11 @@
   font-weight: bold;
   padding: 10px;
   border-radius: 5px;
-  border: none;
   box-shadow: 3px 3px 2px black;
 }
 
-.buttonBlue {
-  background-color: blue;
+.votesRemaining {
+  font-weight: bold;
+  margin: 25px;
+  text-align: center;
 }

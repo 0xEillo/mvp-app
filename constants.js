@@ -1,6 +1,7 @@
 export const TOKEN_ABI = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
-  { inputs: [], name: "AlreadyMinted", type: "error" },
+  { inputs: [], name: "AllTokensClaimed", type: "error" },
+  { inputs: [], name: "HasClaimed", type: "error" },
   {
     anonymous: false,
     inputs: [
@@ -24,25 +25,6 @@ export const TOKEN_ABI = [
       },
     ],
     name: "Approval",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "previousOwner",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
-      },
-    ],
-    name: "OwnershipTransferred",
     type: "event",
   },
   {
@@ -88,6 +70,13 @@ export const TOKEN_ABI = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "address", name: "to", type: "address" }],
+    name: "claim",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "decimals",
     outputs: [{ internalType: "uint8", name: "", type: "uint8" }],
@@ -105,6 +94,13 @@ export const TOKEN_ABI = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "address", name: "", type: "address" }],
+    name: "hasMinted",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "address", name: "spender", type: "address" },
       { internalType: "uint256", name: "addedValue", type: "uint256" },
@@ -115,31 +111,10 @@ export const TOKEN_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "to", type: "address" }],
-    name: "mint",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "name",
     outputs: [{ internalType: "string", name: "", type: "string" }],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "owner",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "renounceOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -177,13 +152,6 @@ export const TOKEN_ABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
-  {
-    inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
-    name: "transferOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
 ];
 
 export const GOVERNANCE_ABI = [
@@ -192,24 +160,13 @@ export const GOVERNANCE_ABI = [
     stateMutability: "nonpayable",
     type: "constructor",
   },
+  { inputs: [], name: "HasVoted", type: "error" },
   {
     inputs: [
       { internalType: "uint256", name: "tokenBalance", type: "uint256" },
       { internalType: "uint256", name: "expectedBalance", type: "uint256" },
     ],
     name: "InsufficientTokenBalance",
-    type: "error",
-  },
-  {
-    inputs: [
-      { internalType: "uint256", name: "votesRemaigning", type: "uint256" },
-      {
-        internalType: "uint256",
-        name: "expectedVotesRemaigning",
-        type: "uint256",
-      },
-    ],
-    name: "InsufficientVotesRemaigning",
     type: "error",
   },
   {
@@ -298,15 +255,9 @@ export const GOVERNANCE_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    name: "_winningCandidates",
-    outputs: [
-      { internalType: "uint256", name: "id", type: "uint256" },
-      { internalType: "string", name: "name", type: "string" },
-      { internalType: "uint256", name: "age", type: "uint256" },
-      { internalType: "string", name: "cult", type: "string" },
-      { internalType: "uint256", name: "votes", type: "uint256" },
-    ],
+    inputs: [{ internalType: "address", name: "", type: "address" }],
+    name: "_hasVoted",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
@@ -328,6 +279,13 @@ export const GOVERNANCE_ABI = [
     name: "addCandidates",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "voter", type: "address" }],
+    name: "hasVoted",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -353,8 +311,8 @@ export const GOVERNANCE_ABI = [
   },
   {
     inputs: [
-      { internalType: "uint256", name: "weight", type: "uint256" },
       { internalType: "uint256", name: "id", type: "uint256" },
+      { internalType: "uint256", name: "weight", type: "uint256" },
     ],
     name: "vote",
     outputs: [],

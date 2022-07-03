@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import { Navbar } from "../components//Navbar";
 import { useAccount } from "wagmi";
 import { TOKEN_ABI } from "../constants";
+import { Button } from "antd";
 
-const TOKEN_ADDRESS = "0xBE4BDEd02E60B7929a5b9D2c932a26E5Ed5e91FF";
+const TOKEN_ADDRESS = "0x20BEe85390d7E3e711a46A1Dd9D57DFB73169E6d";
 
 export default function Home() {
   const [connected, setConnected] = useState(false);
@@ -13,15 +14,6 @@ export default function Home() {
   const [tokenBalance, setTokenBalance] = useState(0);
 
   const { data: account } = useAccount();
-
-  useEffect(() => {
-    getTokenBalance();
-    if (account) {
-      setConnected(true);
-      setVoterAddress(account.address);
-    }
-  });
-
   const getTokenBalance = () => {
     if (connected) {
       _getTokenBalance(voterAddress)
@@ -33,8 +25,20 @@ export default function Home() {
         });
     }
   };
+  useEffect(() => {
+    if (account) {
+      getTokenBalance();
+      setConnected(true);
+      setVoterAddress(account.address);
+    }
+  });
+
   const claimToken = () => {
-    _claimToken(voterAddress);
+    _claimToken().then(() => {
+      _getTokenBalance().then((response) => {
+        setTokenBalance(response);
+      });
+    });
   };
 
   return (
@@ -45,7 +49,8 @@ export default function Home() {
           <div>
             <h3>Your WKND token balance: {tokenBalance}</h3>
           </div>
-          <button
+          <Button
+            type="primary"
             className={styles.darkButton}
             onClick={() => {
               if (connected) {
@@ -54,39 +59,42 @@ export default function Home() {
             }}
           >
             Claim WKND Token
-          </button>
+          </Button>
         </div>
       </div>
     </div>
   );
 }
 
-async function _claimToken(voterAddress) {
+async function _claimToken() {
   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
   // Prompt user for account connections
   await provider.send("eth_requestAccounts", []);
   const signer = provider.getSigner();
+  const signerAddress = signer.getAddress();
 
   const WKND = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, provider);
 
-  let tx = await WKND.connect(signer).mint(voterAddress, {
-    gasPrice: ethers.utils.parseEther("0.00000001"),
-    gasLimit: 1000001,
-  });
-  console.log(tx);
+  try {
+    let tx = await WKND.connect(signer).claim(signerAddress);
+    tx.wait();
+    console.log(tx);
+  } catch (e) {
+    console.log(e);
+  }
 }
 
-async function _getTokenBalance(voterAddress) {
+async function _getTokenBalance() {
   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
   // Prompt user for account connections
   await provider.send("eth_requestAccounts", []);
   const signer = provider.getSigner();
+  const signerAddress = signer.getAddress();
   const WKND = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, provider);
-
-  let tx = await WKND.connect(signer).balanceOf(voterAddress, {
-    gasPrice: ethers.utils.parseEther("0.00000001"),
-    gasLimit: 1000001,
-  });
-  console.log("returned token balance", tx.toNumber());
-  return tx.toNumber();
+  try {
+    let tx = await WKND.connect(signer).balanceOf(signerAddress);
+    return tx.toNumber();
+  } catch (e) {
+    console.log(e);
+  }
 }
