@@ -212,7 +212,7 @@ export const GOVERNANCE_ABI = [
         type: "tuple",
       },
     ],
-    name: "NewChallenger",
+    name: "NewChallanger",
     type: "event",
   },
   {
@@ -258,6 +258,19 @@ export const GOVERNANCE_ABI = [
     inputs: [{ internalType: "address", name: "", type: "address" }],
     name: "_hasVoted",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    name: "_winningCandidates",
+    outputs: [
+      { internalType: "uint256", name: "id", type: "uint256" },
+      { internalType: "string", name: "name", type: "string" },
+      { internalType: "uint256", name: "age", type: "uint256" },
+      { internalType: "string", name: "cult", type: "string" },
+      { internalType: "uint256", name: "votes", type: "uint256" },
+    ],
     stateMutability: "view",
     type: "function",
   },

@@ -6,7 +6,7 @@ import { useAccount } from "wagmi";
 import { ethers } from "ethers";
 import { GOVERNANCE_ABI } from "../constants";
 
-const GOVERNANCE_ADDRESS = "0xefBBA49F5FE544ecc2e352bD3C44c0cF1eCAFD65";
+const GOVERNANCE_ADDRESS = "0xb9d1Be379529bd38F011B9d49dC64111fBab7Fa9";
 
 export function Candidates(data) {
   const [connected, setConnected] = useState(false);
@@ -119,13 +119,6 @@ async function _vote(id, weight) {
     console.log(tx);
   } catch (e) {
     console.log(e);
-    try {
-      const tx = await VotesGovernorContract.connect(signer).vote(id, weight, {
-        gasPrice: ethers.utils.parseEther("0.000000001"),
-        gasLimit: 100000,
-      });
-      console.log(tx);
-    } catch (e) {}
   }
 }
 

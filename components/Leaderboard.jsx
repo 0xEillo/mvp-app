@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import { GOVERNANCE_ABI } from "../constants";
 import { Button } from "antd";
 
-const GOVERNANCE_ADDRESS = "0xefBBA49F5FE544ecc2e352bD3C44c0cF1eCAFD65";
+const GOVERNANCE_ADDRESS = "0xb9d1Be379529bd38F011B9d49dC64111fBab7Fa9";
 
 export const Leaderboard = () => {
   const [topCandidates, setTopCandidates] = useState([]);

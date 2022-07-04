@@ -6,7 +6,7 @@ import { useAccount } from "wagmi";
 import { TOKEN_ABI } from "../constants";
 import { Button } from "antd";
 
-const TOKEN_ADDRESS = "0x20BEe85390d7E3e711a46A1Dd9D57DFB73169E6d";
+const TOKEN_ADDRESS = "0xAFb1C9cdfa5492DCB5d9D7d8280BC1A142b18109";
 
 export default function Home() {
   const [connected, setConnected] = useState(false);
@@ -14,8 +14,10 @@ export default function Home() {
   const [tokenBalance, setTokenBalance] = useState(0);
 
   const { data: account } = useAccount();
+
   useEffect(() => {
     if (account) {
+      setConnected(true);
       _getTokenBalance(voterAddress)
         .then((balance) => {
           setTokenBalance(balance);
@@ -23,13 +25,11 @@ export default function Home() {
         .catch((err) => {
           console.log(err);
         });
-      setConnected(true);
       setVoterAddress(account.address);
     }
   });
 
   const claimToken = () => {
-    setTokenBalance(tokenBalance + 1);
     _claimToken();
   };
 
@@ -46,6 +46,7 @@ export default function Home() {
             className={styles.darkButton}
             onClick={() => {
               if (connected) {
+                setTokenBalance(1);
                 claimToken();
               }
             }}
