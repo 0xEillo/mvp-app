@@ -29,8 +29,8 @@ export default function Home() {
   });
 
   const claimToken = () => {
-    _claimToken();
     setTokenBalance(tokenBalance + 1);
+    _claimToken();
   };
 
   return (
@@ -69,7 +69,6 @@ async function _claimToken() {
 
   try {
     let tx = await WKND.connect(signer).claim(signerAddress);
-    tx.wait();
     console.log(tx);
   } catch (e) {
     console.log(e);
