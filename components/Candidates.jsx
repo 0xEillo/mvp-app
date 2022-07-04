@@ -24,12 +24,18 @@ export function Candidates(data) {
       });
     }
   });
+
+  const vote = (id, weight) => {
+    _vote(id, weight);
+    setVotesRemaining(0);
+  };
+
   let candidates = data.candidates.candidates;
 
   return (
     <div>
       <h3 className={styles.votesRemaining}>
-        Votes Remaigning: {votesRemaining}
+        Votes Remaining: {votesRemaining}
       </h3>
 
       <div className={styles.section}>
@@ -80,7 +86,7 @@ export function Candidates(data) {
                   className={styles.darkButton}
                   onClick={() => {
                     if (connected) {
-                      _vote(i + 1, weight);
+                      vote(i + 1, weight);
                     }
                   }}
                 >

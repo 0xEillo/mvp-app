@@ -14,8 +14,8 @@ export default function Home() {
   const [tokenBalance, setTokenBalance] = useState(0);
 
   const { data: account } = useAccount();
-  const getTokenBalance = () => {
-    if (connected) {
+  useEffect(() => {
+    if (account) {
       _getTokenBalance(voterAddress)
         .then((balance) => {
           setTokenBalance(balance);
@@ -23,22 +23,14 @@ export default function Home() {
         .catch((err) => {
           console.log(err);
         });
-    }
-  };
-  useEffect(() => {
-    if (account) {
-      getTokenBalance();
       setConnected(true);
       setVoterAddress(account.address);
     }
   });
 
   const claimToken = () => {
-    _claimToken().then(() => {
-      _getTokenBalance().then((response) => {
-        setTokenBalance(response);
-      });
-    });
+    _claimToken();
+    setTokenBalance(tokenBalance + 1);
   };
 
   return (
