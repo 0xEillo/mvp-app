@@ -10,7 +10,7 @@ const GOVERNANCE_ADDRESS = "0xefBBA49F5FE544ecc2e352bD3C44c0cF1eCAFD65";
 
 export function Candidates(data) {
   const [connected, setConnected] = useState(false);
-  const [weight, setWeight] = useState(0);
+  const [weight, setWeight] = useState(1);
   const [votesRemaining, setVotesRemaining] = useState(1);
   const { data: account } = useAccount();
 
@@ -18,10 +18,13 @@ export function Candidates(data) {
     if (account) {
       setConnected(true);
       _getvotesRemaining().then((res) => {
+        console.log(res);
         if (res == true) {
           setVotesRemaining(0);
         }
       });
+    } else {
+      setVotesRemaining(0);
     }
   });
 
